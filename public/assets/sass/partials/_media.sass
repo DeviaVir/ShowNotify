@@ -19,16 +19,21 @@
 
 // Mobile
 @media only screen and (max-width: 767px) 
+	#github
+		display: none
 	.wrapper
 		width: 300px 
 	#nav, #header h1
 		float: none 
 	#header h1
 		margin-bottom: .5em 
-	#nav ul li
-		margin: 0
-		float: none
-		margin-bottom: 1px
+	#nav ul
+		margin-right: 0
+		
+		li
+			margin: 0
+			float: none
+			margin-bottom: 1px
 	#nav ul li a, #nav ul li span
 		display: block
 		padding: 2px 5px 
@@ -36,8 +41,12 @@
 
 // Mobile (landscape)
 @media only screen and (min-width: 480px) and (max-width: 767px) 
+	#github
+		display: none
 	.wrapper
 		width: 420px 
+	#nav ul
+		margin-right: 0
 
 // ==|== print styles =======================================================
 // Print styles.
