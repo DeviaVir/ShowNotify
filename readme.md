@@ -79,14 +79,14 @@ CREATE TABLE IF NOT EXISTS `users_notifications` (
 class Cron_Controller extends Base_Controller {	
 	public $restful = true;
 	public $layout  = 'layouts.main';
-	private static $api    = /* Request an API Key from thetvdb.com */'';
+	private static $api    = /* Your API key from thetvdb.com here */'';
 
 	public function get_index() {
 		if( $_SERVER[ 'REMOTE_ADDR' ] == '95.211.76.103'
 		 || $_SERVER[ 'REMOTE_ADDR' ] == '2001:1af8:4500:a005:6::dd:c' ) { // DualDev cron servers
 			set_time_limit ( 300 );
 			$tomorrow = date( 'Y-m-d', ( time() + 86400 ) );
-			$yesterday = date( 'Y-m-d', ( time() + 86400 ) );
+			$yesterday = date( 'Y-m-d', ( time() - 86400 ) );
 
 			$groups = DB::Query( 'SELECT * FROM `users_notifications` GROUP BY `serie`' );
 			foreach( $groups as $group ) {
@@ -116,7 +116,6 @@ class Cron_Controller extends Base_Controller {
 							<br /><br />
 							Have fun watching and let me know how you liked it! :-)<br /><br />
 							- Chase Sillevis<br />
-							https://twitter.com/deviavir<br />
 							https://chase.sillevis.net/', $headers );
 					}
 				}
@@ -142,7 +141,6 @@ class Cron_Controller extends Base_Controller {
 						<br /><br />
 						Have fun watching and let me know how you liked it! :-)<br /><br />
 						- Chase Sillevis<br />
-						https://twitter.com/deviavir<br />
 						https://chase.sillevis.net/', $headers );
 					}
 				}
