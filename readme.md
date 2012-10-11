@@ -1,3 +1,5 @@
+[![endorse](http://api.coderwall.com/deviavir/endorsecount.png)](http://coderwall.com/deviavir)
+
 # ShowNotify
 This PHP (using the Laraval framework) project allows users to be notified for new shows.
 
