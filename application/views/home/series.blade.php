@@ -28,4 +28,4 @@
 	@endforeach
 	</ul>
 	@endif
-</section>
+</div>
