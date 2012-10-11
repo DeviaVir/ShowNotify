@@ -7,7 +7,7 @@
 	<h1>Welcome, traveler!</h1>
 	<p>
 		So you like watching TV shows? Great! So do I. One thing that annoyed me was that I never really knew when the show I liked would air (or had already aired), so I decided to do something about that.<br /><br />
-		Say hi to ShowNotify. Simply enter your e-mail address and desired password in the Sign up form below, we will send you a password which you can use to log in. Simply find your password in your mailbox if you want to add shows later! After logging in, you simply search for the series you like and add them to your watchlist.<br /><br />
+		Say hi to ShowNotify. Simply enter your e-mail address at the Sign up form below, we will send you a password which you can use to log in. Simply find your password in your mailbox if you want to add shows later! After logging in, search for the series you like and add them to your watchlist! We'll notify you after or before they air.<br /><br />
 		Sounds simple right? Give it a try! It's <strong>free</strong> :-)
 	</p>
 </div>
