@@ -1,0 +1,99 @@
+// ==|== media queries ======================================================
+// PLACEHOLDER Media Queries for Responsive Design.
+// These override the primary ('mobile first') styles
+// Modify as content requires.
+// ========================================================================== */
+
+// Retina
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi)
+	// Style adjustments for high resolution devices
+	#container
+		background-image: url( '../img/bg@2x.png' )
+
+// Tablet
+@media only screen and (min-width: 768px) and (max-width: 959px) 
+	.wrapper
+		width: 748px 
+
+
+
+// Mobile
+@media only screen and (max-width: 767px) 
+	.wrapper
+		width: 300px 
+	#nav, #header h1
+		float: none 
+	#header h1
+		margin-bottom: .5em 
+	#nav ul li
+		margin: 0
+		float: none
+		margin-bottom: 1px
+	#nav ul li a, #nav ul li span
+		display: block
+		padding: 2px 5px 
+
+
+// Mobile (landscape)
+@media only screen and (min-width: 480px) and (max-width: 767px) 
+	.wrapper
+		width: 420px 
+
+// ==|== print styles =======================================================
+// Print styles.
+// Inlined to avoid required HTTP connection: h5bp.com/r
+// ========================================================================== */
+
+@media print
+	*
+		background: transparent !important
+		color: #000 !important // Black prints faster: h5bp.com/s
+		box-shadow: none !important
+		text-shadow: none !important
+
+	a,
+	a:visited
+		text-decoration: underline
+
+	a[href]:after
+		content: " (" attr(href) ")"
+
+	abbr[title]:after
+		content: " (" attr(title) ")"
+
+	//
+	// Don't show links for images, or javascript/internal links
+	//
+
+	.ir a:after,
+	a[href^="javascript:"]:after,
+	a[href^="#"]:after
+		content: ""
+
+	pre,
+	blockquote
+		border: 1px solid #999
+		page-break-inside: avoid
+
+	thead
+		display: table-header-group // h5bp.com/t 
+
+	tr,
+	img
+		page-break-inside: avoid
+
+	img
+		max-width: 100% !important
+
+	@page
+		margin: 0.5cm
+
+	p,
+	h2,
+	h3
+		orphans: 3
+		widows: 3
+
+	h2,
+	h3
+		page-break-after: avoid

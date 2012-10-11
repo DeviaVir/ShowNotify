@@ -1,0 +1,189 @@
+@import compass/css3
+
+//-----------------------------------------------
+// The following html5-boilerplate styles should
+// probably be customized for each site
+//-----------------------------------------------
+body, select, input, textarea
+	color: $font-color
+	// Set your base font here, to apply evenly
+	font-family: $base-font-family
+
+//-----------------------------------
+// Add your own custom styles below
+//-----------------------------------
+
+
+// Layout
+.wrapper 
+	margin: auto 
+	max-width: 1000px
+	padding: 36px 10px
+	_width: 940px		
+
+.no-decoration
+	text-decoration: none
+
+.main aside,
+#main aside
+	background-color: #f6f6f6
+
+.forms
+	@include clear
+
+	form
+		width: 50%
+		float: left
+
+#blocks li 
+	background-color: #f8f8f8
+	height: 100px
+
+
+// Header
+#header 
+	overflow: hidden
+	padding-bottom: 1.5em
+	border-bottom: 1px solid #eee
+	@include background( linear-gradient(center top , #285077, #4488BA) repeat scroll 0 0 transparent )
+
+	h1 
+		float: left
+		margin: 0	
+		color: white
+
+#logo
+	padding-left: 60px
+	background: transparent url( '../img/logo.png' ) no-repeat 0 0
+	background-size: 40px 34px
+	font:
+		family: Helvetica, unquote("sans-serif")
+		weight: lighter
+		size: 30px
+	color: #333
+
+	&.svg
+		background-image: url( '../img/logo.svg' )
+
+#container
+	background: #f4f4f4 url( '../img/bg.png' ) repeat 0 0
+
+// Nav
+#nav 
+	float: right
+
+#nav ul, #navside ul 
+	margin: 0
+	list-style: none	
+
+#nav ul li 
+	color: #fff
+	float: left
+	margin-left: 1.5em	
+
+	a
+		text-decoration: none
+		color: inherit
+
+.shows
+	margin: 0
+	padding: 0
+	list-style: none
+	@include clear
+
+	li
+		width: 150px
+		height: 220px
+		margin: 0 5px
+		padding: 0
+		float: left
+		@include box-sizing( border-box )
+		cursor: pointer
+
+	.img
+		width: 140px
+		margin: 0 auto
+		display: block
+		height: 140px
+		padding: 5px
+		position: relative
+
+		display: -moz-box
+		display: -moz-flexbox
+		-moz-box-align: center
+		-moz-flex-align: center
+		-moz-box-pack: center
+		-moz-flex-pack: center
+
+		border-radius: 5px
+		border: 1px solid #eee
+		background: rgba( 255, 255, 255, 0.3 )
+
+	img
+		display: block
+		text-align: center
+		margin: 0 auto
+		max-width: 140px
+		max-height: 140px
+		border-radius: inherit
+
+	a
+		text-decoration: none
+		font-weight: bold
+		color: #333
+		text-align: center
+		display: block
+
+
+#navside ul li 
+	padding: 2px 0
+
+h1, h2, h3
+	font-weight: lighter
+
+
+// Footer
+#footer 
+	border-top: 1px solid #eee
+	padding-top: 1.5em
+	margin: 0 0 1.5em
+	font-size: .85em
+	position: relative
+	overflow: hidden
+
+	.wrapper
+		float: right
+		position: relative
+		left: -50%
+		width: auto
+		padding: 0
+
+	ul
+		margin: 0
+		padding: 0
+		list-style: none
+		position: relative
+		top: 0
+		left: 50%
+		text-align: center
+
+		li
+			height: 26px
+			background: #e6e6e6
+			border: #ccc 1px solid
+			float: left
+			font-weight: bold
+			line-height: 25px
+			margin: 0 0 0 -1px
+			padding: 1px 1px 0
+			position: relative
+			vertical-align: middle
+
+			a
+				background: #ddd
+				color: #333
+				display: block
+				padding: 1px 20px 0 20px
+				text-decoration: none
+				text-shadow: 0 1px 1px #fff
+				white-space: nowrap
