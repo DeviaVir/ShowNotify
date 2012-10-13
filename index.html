@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=640" />
+
+    <link rel="stylesheet" href="stylesheets/core.css" media="screen"/>
+    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)"/>
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+
+    <script type="text/javascript" src="javascripts/modernizr.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#main_content').headsmart()
+      })
+    </script>
+    <title>Shownotify by DeviaVir</title>
+  </head>
+
+  <body>
+    <a id="forkme_banner" href="https://github.com/DeviaVir/ShowNotify">View on GitHub</a>
+    <div class="shell">
+
+      <header>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <h1>Shownotify</h1>
+            <h2>Notifies you of new show releases</h2>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+      </header>
+
+      <section id="downloads">
+        <span class="inner">
+          <a href="https://github.com/DeviaVir/ShowNotify/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/DeviaVir/ShowNotify/tarball/master" class="tgz"><em>download</em> .TGZ</a>
+        </span>
+      </section>
+
+
+      <span class="banner-fix"></span>
+
+
+      <section id="main_content">
+        <p><a href="http://coderwall.com/deviavir"><img src="http://api.coderwall.com/deviavir/endorsecount.png" alt="endorse"></a></p>
+
+<h1>ShowNotify</h1>
+
+<p>This PHP (using the Laraval framework) project allows users to be notified for new shows.</p>
+
+<h2>Instructions</h2>
+
+<p>Read about how to use and develop against ShowNotify below. Pay special attention to e-mail addresses when forking, I have stated my own for a lot of reply-to's.</p>
+
+<h3>Styles</h3>
+
+<p>The styles are based on my <a href="https://github.com/DeviaVir/boilerplate-kube">kube-framework boilerplate</a>, find usage instructions there.</p>
+
+<h3>Cron</h3>
+
+<p>0 10 * * * shownotify.nl/public/cron/index</p>
+
+<p>Find the controller that belongs in /application/controllers/cron.php below, please request an API key from thetvdb.com</p>
+
+<h3>Hosting</h3>
+
+<p>I have hosted ShowNotify at <a href="https://dualdev.com/">dualdev.com</a>, with the following nginx config:</p>
+
+<pre><code>        location /public {
+            index index.php;
+            if (!-e $request_filename) {
+                rewrite  ^(.*)$  /public/index.php?/$1 last;
+                break;
+            }
+        }
+
+        location / {
+            rewrite ^ /public permanent;
+        }
+</code></pre>
+
+<h3>Database</h3>
+
+<p>Create a new database file based off of default Laravel database settings. It should be placed here: application/config/database.php
+Find the structure I used for my database all the way below!</p>
+
+<h2>License</h2>
+
+<p>ShowNotify is open-sourced software licensed under the MIT License.</p>
+
+<h2>MySQL</h2>
+
+<pre><code>-- phpMyAdmin SQL Dump
+-- version 3.5.2.2
+-- http://www.phpmyadmin.net
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `paid` tinyint(1) NOT NULL default '0',
+  `id` int(11) NOT NULL auto_increment,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+
+CREATE TABLE IF NOT EXISTS `users_notifications` (
+  `user` varchar(255) NOT NULL,
+  `serie` int(11) NOT NULL,
+  `after` tinyint(1) NOT NULL default '0',
+  `name` mediumtext NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+</code></pre>
+
+<h2>/application/controllers/cron.php</h2>
+
+<pre><code>&lt;?php
+class Cron_Controller extends Base_Controller { 
+    public $restful = true;
+    public $layout  = 'layouts.main';
+    private static $api    = /* Your API key from thetvdb.com here */'';
+
+    public function get_index() {
+        if( $_SERVER[ 'REMOTE_ADDR' ] == '95.211.76.103'
+         || $_SERVER[ 'REMOTE_ADDR' ] == '2001:1af8:4500:a005:6::dd:c' ) { // DualDev cron servers
+            set_time_limit ( 300 );
+            $tomorrow = date( 'Y-m-d', ( time() + 86400 ) );
+            $yesterday = date( 'Y-m-d', ( time() - 86400 ) );
+
+            $groups = DB::Query( 'SELECT * FROM `users_notifications` GROUP BY `serie`' );
+            foreach( $groups as $group ) {
+                $serieURL = 'http://www.thetvdb.com/api/' . self::$api . '/series/' . $group-&gt;serie;
+                $serie = simplexml_load_file( $serieURL );
+
+                # Add to queue?
+
+                $episodeURL = 'http://www.thetvdb.com/api/GetEpisodeByAirDate.php?apikey=' . self::$api . '&amp;seriesid=' . $group-&gt;serie . '&amp;airdate=' . $tomorrow;
+                $episode = simplexml_load_file( $episodeURL );
+
+                $error = $episode-&gt;Error;
+                if( reset( $error ) != '' ) {
+                    // Continue
+                    print 'Skip: ' . $group-&gt;serie . '&lt;br /&gt;';
+                } else {
+                    $users = DB::table( 'users_notifications' )-&gt;where( 'serie', '=', $group-&gt;serie )-&gt;where( 'after', '=', 0 );
+                    foreach( $users-&gt;get() as $user ) {
+                        $headers =  'From: notifications@shownotify.nl' . "\r\n" .
+                            'Reply-To: chase@sillevis.net' . "\r\n" .
+                            'X-Mailer: PHP/' . phpversion() . "\r\n" .
+                            'MIME-Version: 1.0' . "\r\n" . 
+                            'Content-type: text/html; charset=iso-8859-1';
+                        mail( $user-&gt;user, 'Notification for tomorrow - ShowNotify', 'Hey! Look sharp, your show &lt;strong&gt;' . $serie-&gt;Series-&gt;SeriesName . '&lt;/strong&gt; will continue tomorrow, it will be episode &lt;strong&gt;' . $episode-&gt;Episode-&gt;EpImgFlag . '&lt;/strong&gt; of season &lt;strong&gt;' . $episode-&gt;Episode-&gt;SeasonNumber . '&lt;/strong&gt; and will be called &lt;strong&gt;' . $episode-&gt;Episode-&gt;EpisodeName . '&lt;/strong&gt;.&lt;br /&gt;&lt;br /&gt;
+                            Here is a short overview:&lt;br /&gt;
+                            ' . $episode-&gt;Episode-&gt;Overview . '
+                            &lt;br /&gt;&lt;br /&gt;
+                            Have fun watching and let me know how you liked it! :-)&lt;br /&gt;&lt;br /&gt;
+                            - Chase Sillevis&lt;br /&gt;
+                            https://chase.sillevis.net/', $headers );
+                    }
+                }
+
+                $episodeURL = 'http://www.thetvdb.com/api/GetEpisodeByAirDate.php?apikey=' . self::$api . '&amp;seriesid=' . $group-&gt;serie . '&amp;airdate=' . $yesterday;
+                $episode = simplexml_load_file( $episodeURL );
+
+                $error = $episode-&gt;Error;
+                if( reset( $error ) != '' ) {
+                    // Continue
+                    print 'Skip: ' . $group-&gt;serie . '&lt;br /&gt;';
+                } else {
+                    $users = DB::table( 'users_notifications' )-&gt;where( 'serie', '=', $group-&gt;serie )-&gt;where( 'after', '=', 1 );
+                    foreach( $users-&gt;get() as $user ) {
+                        $headers =  'From: notifications@shownotify.nl' . "\r\n" .
+                            'Reply-To: chase@sillevis.net' . "\r\n" .
+                            'X-Mailer: PHP/' . phpversion() . "\r\n" .
+                            'MIME-Version: 1.0' . "\r\n" . 
+                            'Content-type: text/html; charset=iso-8859-1';
+                    mail( $user-&gt;user, 'Notification from yesterday - ShowNotify', 'Hey! Look sharp, your show &lt;strong&gt;' . $serie-&gt;Series-&gt;SeriesName . '&lt;/strong&gt; has continued, it was episode &lt;strong&gt;' . $episode-&gt;Episode-&gt;EpImgFlag . '&lt;/strong&gt; of season &lt;strong&gt;' . $episode-&gt;Episode-&gt;SeasonNumber . '&lt;/strong&gt; and has been called &lt;strong&gt;' . $episode-&gt;Episode-&gt;EpisodeName . '&lt;/strong&gt;.&lt;br /&gt;&lt;br /&gt;
+                        Here is a short overview:&lt;br /&gt;
+                        ' . $episode-&gt;Episode-&gt;Overview . '
+                        &lt;br /&gt;&lt;br /&gt;
+                        Have fun watching and let me know how you liked it! :-)&lt;br /&gt;&lt;br /&gt;
+                        - Chase Sillevis&lt;br /&gt;
+                        https://chase.sillevis.net/', $headers );
+                    }
+                }
+            }
+
+            $this-&gt;layout-&gt;nest( 'content', 'home.cron', array() );
+        } else {
+            return 'access denied';
+        }
+    }
+}
+?&gt;
+</code></pre>
+      </section>
+
+      <footer>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <p>this project by <a href="https://github.com/DeviaVir">DeviaVir</a> can be found on <a href="https://github.com/DeviaVir/ShowNotify">GitHub</a></p>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
+        <span class="octocat"></span>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>
