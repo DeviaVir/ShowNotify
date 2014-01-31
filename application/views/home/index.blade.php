@@ -4,7 +4,7 @@
 	<ul>
 		@foreach( $series as $serie )
 			<li>
-				<a href="/public/series/index/{{ $serie->serie }}" title="{{ $serie->name }}">{{ $serie->name }}</a>
+				<a href="/series/index/{{ $serie->serie }}" title="{{ $serie->name }}">{{ $serie->name }}</a>
 			</li>
 		@endforeach
 	</ul>

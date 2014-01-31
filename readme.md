@@ -18,16 +18,12 @@ Find the controller that belongs in /application/controllers/cron.php below, ple
 I have hosted ShowNotify at [dualdev.com](https://dualdev.com/), with the following nginx config:
 
 ```
-        location /public {
+        location / {
             index index.php;
             if (!-e $request_filename) {
-                rewrite  ^(.*)$  /public/index.php?/$1 last;
+                rewrite  ^(.*)$  /index.php?/$1 last;
                 break;
             }
-        }
-        
-        location / {
-            rewrite ^ /public permanent;
         }
 ```
 

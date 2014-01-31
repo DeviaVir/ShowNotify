@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>ShowNotify - Keep it watching</title>
+        <title>ShowNotify - Keep watching</title>
         <meta name="description" content="Simply sign up and add your favorite series, we'll do the rest.">
         <meta name="viewport" content="width=device-width">
 		{{ HTML::style('assets/css/main.css') }}

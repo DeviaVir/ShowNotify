@@ -19,11 +19,11 @@
 	<h3>Search results</h3>
 	<ul class="shows">
 	@foreach( $series as $serie )
-		<li onclick="window.location='/public/series/index/{{ $serie[ 'id' ] }}';">
+		<li onclick="window.location='/series/index/{{ $serie[ 'id' ] }}';">
 			<span class="img">
 				<img src="{{ $serie[ 'image' ] }}" height="140" alt="{{ $serie[ 'name' ] }}" />
 			</span>
-			<a href="/public/series/index/{{ $serie[ 'id' ] }}" title="{{ $serie[ 'name' ] }}">{{ $serie[ 'name' ] }}</a>
+			<a href="/series/index/{{ $serie[ 'id' ] }}" title="{{ $serie[ 'name' ] }}">{{ $serie[ 'name' ] }}</a>
 		</li>
 	@endforeach
 	</ul>
