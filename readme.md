@@ -15,7 +15,7 @@ The styles are based on my [kube-framework boilerplate](https://github.com/Devia
 Find the controller that belongs in /application/controllers/cron.php below, please request an API key from thetvdb.com
 
 ### Hosting
-I have hosted ShowNotify at [dualdev.com](https://dualdev.com/), with the following nginx config:
+I have hosted ShowNotify at [dualdev.com](https://www.dualdev.com/), with the following nginx config:
 
 ```
         location / {
