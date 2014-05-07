@@ -1,0 +1,17 @@
+extends ../layout
+
+block content
+  h2 Shows
+  hr
+
+  .row.shows
+    if shows.length
+      for show in shows
+        .col-sm-4
+          .panel.panel-default
+            .panel-body
+              img(src='http://thetvdb.com/banners/_cache/' + show.poster, height=40)
+              a(href='/shows/id/' + show.id) show.SeriesName
+    else
+      .alert.alert-info.animated.fadeIn
+        div No shows added to your list yet

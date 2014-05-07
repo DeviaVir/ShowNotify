@@ -1,0 +1,27 @@
+extends ../layout
+
+block content
+  .page-header
+    h2
+      i.fa.fa-play-circle
+      | TheTVDB API
+
+  .btn-group.btn-group-justified
+    a.btn.btn-primary(href='https://github.com/joaocampinhos/thetvdb-api', target='_blank')
+      i.fa.fa-book
+      | Node Docs
+    a.btn.btn-primary(href='http://www.thetvdb.com/wiki/index.php/Programmers_API#File_Structure', target='_blank')
+      i.fa.fa-laptop
+      | API Structure
+
+  h3 Search for "Simpsons"
+  table.table.table-condensed
+    thead
+      tr
+        th Title
+    tbody
+      for serie in series
+        tr
+          td
+            a(href='http://www.imdb.com/title/' + serie.IMDB_ID, target='_blank')
+              = serie.SeriesName

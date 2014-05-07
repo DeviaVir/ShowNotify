@@ -1,0 +1,16 @@
+extends ../layout
+
+block content
+  h2 Search for 
+    i=name
+  hr
+  table.table.table-condensed
+    thead
+      tr
+        th Title
+    tbody
+      for serie in series
+        tr
+          td
+            a(href='/shows/id/' + serie.id)
+              = serie.SeriesName
