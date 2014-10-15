@@ -2,15 +2,33 @@ extends ../layout
 
 block content
   h2=serie.SeriesName
-  p This show first aired (or will air) #{serie.FirstAired}, and has a rating of #{serie.Rating}. Please find an overview below.
-    if 'poster' in serie
-      img(align='right', src='http://thetvdb.com/banners/_cache/' + serie.poster, height="150")
-    if serie.IMDB_ID
-      br
-      br
-      a(href='http://www.imdb.com/title/' + serie.IMDB_ID, title='IMDB', class='btn imdb', target='_blank') IMDB info
-      br
-      br
-    =serie.Overview
+  div(class='row')
+    div(class='col-md-8')
+      h3.
+        Overview
+      p
+        =serie.Overview
+      h3.
+        Actors
+      p
+        =actors
+      h3.
+        Genres
+      p
+        =genres
+      h3.
+        Airing information
+      p.
+        The show first aired (or will air) #{serie.FirstAired}, and has a rating of #{serie.Rating}. It's current status is
+        #{serie.Status}, an episode takes about #{serie.Runtime} minutes. This show usually airs on #{serie.Airs_DayOfWeek}s
+        at #{serie.Airs_Time} on #{serie.Network}.
+      if serie.IMDB_ID
+        p
+          a(href='http://www.imdb.com/title/' + serie.IMDB_ID, title='IMDB', class='btn imdb btn-info', target='_blank').
+            IMDB info
+    div(class='col-md-1').
+      &nbsp;
 
-
+    div(class='col-md-3 well')
+      if 'poster' in serie
+        img(align='middle', width="100%", src='http://thetvdb.com/banners/_cache/' + serie.poster)

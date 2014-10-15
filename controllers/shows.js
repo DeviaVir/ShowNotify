@@ -33,11 +33,22 @@ exports.getId = function(req, res) {
   var key = secrets.thetvdb.apiKey;
   tvDB(key).getSeriesById(id, function(error,result){
     if(('Data' in result) && result.Data !== 0 && ('Series' in result.Data)) {
-      var serie = result.Data.Series;
-      console.log(serie);
+      var serie = result.Data.Series,
+          actors = serie.Actors.split('|'),
+          genres = serie.Genre.split('|');
+
+      var firstActor = actors.shift(),
+          lastActor = actors.pop(),
+          firstGenre = genres.shift(),
+          lastGenre = genres.pop();
+
+      actors = actors.join(', ');
+      genres = genres.join(', ');
       res.render('shows/id', {
         title: 'TV Show',
-        serie: serie
+        serie: serie,
+        actors: actors,
+        genres: genres
       });
     }
     else {
@@ -79,10 +90,12 @@ exports.postSearch = function(req, res) {
   var key = secrets.thetvdb.apiKey;
   tvDB(key).getSeries(name, function(error,result){
     if(('Data' in result) && result.Data !== 0 && ('Series' in result.Data)) {
+      var serie = result.Data.Series;
+      console.log(serie);
       res.render('shows/results', {
         title: 'Shows for ' + name,
         name: name,
-        series: result.Data.Series
+        series: serie
       });
     }
     else {
