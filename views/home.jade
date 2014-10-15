@@ -4,3 +4,27 @@ block content
   h1 ShowNotify 
   p.lead
     | Notifies you of new series automatically.
+
+  if user
+    h2 Shows
+    hr
+    .row.shows
+      if shows.length
+        for show in shows
+          .col-sm-4
+            .panel.panel-default
+              .panel-body
+                .row
+                  .col-md-4
+                    img(src='http://thetvdb.com/banners/_cache/' + show.poster, height=100)
+                  .col-md-8
+                    p
+                      a(href='/shows/id/' + show.id)
+                        =show.SeriesName
+                      br
+                      =show.Network
+                      | , 
+                      =show.Rating
+      else
+        .alert.alert-info.animated.fadeIn
+          div No shows added to your list yet

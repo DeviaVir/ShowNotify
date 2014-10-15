@@ -17,12 +17,18 @@ block content
     .form-group
       label.col-sm-2.control-label(for='gender') Gender
       .col-sm-4
-        label.radio
-          input(type='radio', checked=user.profile.gender=='male', name='gender', value='male', data-toggle='radio')
-          span Male
-        label.radio
-          input(type='radio', checked=user.profile.gender=='female', name='gender', value='female', data-toggle='radio')
-          span Female
+        .radio.radio-primary
+          label
+            input(type='radio', checked=user.profile.gender=='male', name='gender', value='male', data-toggle='radio')
+            span.circle
+            span.check
+            | Male
+        .radio.radio-primary
+          label
+            input(type='radio', checked=user.profile.gender=='female', name='gender', value='female', data-toggle='radio')
+            span.circle
+            span.check
+            | Female
     .form-group
       label.col-sm-2.control-label(for='location') Location
       .col-sm-4

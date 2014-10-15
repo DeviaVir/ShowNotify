@@ -129,10 +129,10 @@ app.get('/api/scraping', apiController.getScraping);
 app.get('/api/facebook', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getFacebook);
 app.get('/api/github', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getGithub);
 app.get('/api/twitter', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getTwitter);
-app.get('/shows', showsController.getShows);
 app.get('/shows/search', showsController.getSearch);
 app.post('/shows/search', showsController.postSearch);
 app.get('/shows/id/:id', showsController.getId);
+app.post('/shows/id/:id', showsController.postId);
 
 /**
  * OAuth routes for sign-in.

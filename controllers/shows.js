@@ -17,9 +17,27 @@ var tvDB = require('thetvdb-api');
  */
 
 exports.getShows = function(req, res) {
-  res.render('shows/index', {
-    title: 'Shows',
-    shows: []
+  var currentShows = req.user.shows,
+      key = secrets.thetvdb.apiKey,
+      shows = [],
+      c = 0,
+      total = currentShows.length;
+
+  currentShows.forEach(function(showId) {
+    tvDB(key).getSeriesById(showId, function(error, result) {
+      c++;
+      if(('Data' in result) && result.Data !== 0 && ('Series' in result.Data)) {
+        shows.push(result.Data.Series);
+
+        if(c >= total) {
+          console.log(shows);
+          res.render('shows/index', {
+            title: 'Shows',
+            shows: shows
+          });
+        }
+      }
+    });
   });
 };
 
@@ -29,35 +47,29 @@ exports.getShows = function(req, res) {
  */
 
 exports.getId = function(req, res) {
-  var id = req.params.id;
-  var key = secrets.thetvdb.apiKey;
-  tvDB(key).getSeriesById(id, function(error,result){
-    if(('Data' in result) && result.Data !== 0 && ('Series' in result.Data)) {
-      var serie = result.Data.Series,
-          actors = serie.Actors.split('|'),
-          genres = serie.Genre.split('|');
+  return showId(req, res);
+};
 
-      var firstActor = actors.shift(),
-          lastActor = actors.pop(),
-          firstGenre = genres.shift(),
-          lastGenre = genres.pop();
+/**
+ * POST /shows/id/:id
+ * TheTVDB Show a certain TV show
+ */
 
-      actors = actors.join(', ');
-      genres = genres.join(', ');
-      res.render('shows/id', {
-        title: 'TV Show',
-        serie: serie,
-        actors: actors,
-        genres: genres
-      });
-    }
-    else {
-      res.render('shows/search', {
-        title: 'Search for shows',
-        noresult: true
-      });
-    }
-  });
+exports.postId = function(req, res) {
+  var id = req.params.id,
+      user = req.user;
+
+  // Add show to followlist for this user
+  if(user.shows.indexOf(id) > -1) {
+    var i = user.shows.indexOf(id);
+    user.shows.splice(i);
+  }
+  else {
+    user.shows.push(id);
+  }
+  user.save();
+
+  return showId(req, res);
 };
 
 /**
@@ -106,3 +118,41 @@ exports.postSearch = function(req, res) {
     }
   });
 };
+
+function showId(req, res) {
+  var id = req.params.id,
+      key = secrets.thetvdb.apiKey;
+  tvDB(key).getSeriesById(id, function(error,result){
+    if(('Data' in result) && result.Data !== 0 && ('Series' in result.Data)) {
+      var serie = result.Data.Series,
+          actors = serie.Actors.split('|'),
+          genres = serie.Genre.split('|');
+
+      var firstActor = actors.shift(),
+          lastActor = actors.pop(),
+          firstGenre = genres.shift(),
+          lastGenre = genres.pop();
+
+      var following = false;
+      if(req.user.shows.indexOf(id) > -1) {
+        following = true;
+      }
+
+      actors = actors.join(', ');
+      genres = genres.join(', ');
+      res.render('shows/id', {
+        title: 'TV Show',
+        serie: serie,
+        actors: actors,
+        genres: genres,
+        following: following
+      });
+    }
+    else {
+      res.render('shows/search', {
+        title: 'Search for shows',
+        noresult: true
+      });
+    }
+  });
+}
