@@ -14,25 +14,34 @@ exports.index = function(req, res) {
         c = 0,
         total = currentShows.length;
 
-    currentShows.forEach(function(showId) {
-      tvDB(key).getSeriesById(showId, function(error, result) {
-        c++;
-        if(('Data' in result) && result.Data !== 0 && ('Series' in result.Data)) {
-          shows.push(result.Data.Series);
-          if(c >= total) {
-            res.render('home', {
-              title: 'Home',
-              shows: shows
-            });
+    if(currentShows.length > 0) {
+      currentShows.forEach(function(showId) {
+        tvDB(key).getSeriesById(showId, function(error, result) {
+          c++;
+          if(('Data' in result) && result.Data !== 0 && ('Series' in result.Data)) {
+            shows.push(result.Data.Series);
+            if(c >= total) {
+              res.render('home', {
+                title: 'Home',
+                shows: shows
+              });
+            }
           }
-        }
+        });
       });
-    });
+    }
+    else {
+      emptyHome(req, res);
+    }
   }
   else {
-    res.render('home', {
-      title: 'Home',
-      shows: []
-    });
+    emptyHome(req, res);
   }
 };
+
+function emptyHome(req, res) {
+  res.render('home', {
+    title: 'Home',
+    shows: []
+  });
+}

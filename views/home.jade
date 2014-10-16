@@ -7,11 +7,13 @@ block content
 
   if user
     h2 Shows
+    p
+      | You are currently following the below shows and receiving notifications.
     hr
-    .row.shows
-      if shows.length
+    if shows.length > 0
+      .row.shows
         for show in shows
-          .col-sm-4
+          .col-sm-3
             .panel.panel-default
               .panel-body
                 .row
@@ -25,6 +27,7 @@ block content
                       =show.Network
                       | , 
                       =show.Rating
-      else
-        .alert.alert-info.animated.fadeIn
-          div No shows added to your list yet
+    else
+      .alert.alert-dismissable.alert-info
+        | No shows added to your list yet! 
+        a(href='/shows/search', class='alert-link') Add some now

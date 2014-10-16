@@ -30,7 +30,6 @@ exports.getShows = function(req, res) {
         shows.push(result.Data.Series);
 
         if(c >= total) {
-          console.log(shows);
           res.render('shows/index', {
             title: 'Shows',
             shows: shows
@@ -103,11 +102,15 @@ exports.postSearch = function(req, res) {
   tvDB(key).getSeries(name, function(error,result){
     if(('Data' in result) && result.Data !== 0 && ('Series' in result.Data)) {
       var serie = result.Data.Series;
-      console.log(serie);
+      if(Object.prototype.toString.call(serie) == '[object Object]') {
+        serie = [serie];
+      }
+
       res.render('shows/results', {
         title: 'Shows for ' + name,
         name: name,
-        series: serie
+        series: serie,
+        noresult: false
       });
     }
     else {

@@ -13,6 +13,8 @@ var userSchema = new mongoose.Schema({
   linkedin: String,
   tokens: Array,
 
+  notifications: Boolean,
+
   shows: Array,
 
   profile: {
