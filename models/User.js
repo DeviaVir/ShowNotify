@@ -13,7 +13,10 @@ var userSchema = new mongoose.Schema({
   linkedin: String,
   tokens: Array,
 
-  notifications: Boolean,
+  notifications: {
+    delay: { type: Boolean, default: true },
+    enabled: { type: Boolean, default: true }
+  },
 
   shows: Array,
 

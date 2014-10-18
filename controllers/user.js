@@ -122,6 +122,24 @@ exports.getAccount = function(req, res) {
 };
 
 /**
+ * POST /account/notifications
+ * Update notifications information.
+ */
+exports.postUpdateNotifications = function(req, res, next) {
+  User.findById(req.user.id, function(err, user) {
+    if (err) return next(err);
+    user.notifications.enabled = !!parseInt(req.body.enabled, 10) || '';
+    user.notifications.delay = !!parseInt(req.body.delay, 10) || '';
+
+    user.save(function(err) {
+      if (err) return next(err);
+      req.flash('success', { msg: 'Notification settings updated.' });
+      res.redirect('/account');
+    })
+  });
+}
+
+/**
  * POST /account/profile
  * Update profile information.
  */

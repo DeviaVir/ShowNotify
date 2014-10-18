@@ -1,5 +1,6 @@
 var secrets = require('../config/secrets');
 var User = require('../models/User');
+var Show = require('../models/Show');
 var querystring = require('querystring');
 var validator = require('validator');
 var async = require('async');
@@ -67,6 +68,25 @@ exports.postId = function(req, res) {
     user.shows.push(id);
   }
   user.save();
+
+  // Add to shows
+  Show.findById(id, function(err, currentShow) {
+    console.log(err, currentShow);
+
+    if(!currentShow) {
+      var show = new Show({
+        id: id
+      });
+
+      show.save(function(err) {
+        if (err) {
+          if (err.code === 11000) {
+            req.flash('errors', { msg: 'Show with that id already exists.' });
+          }
+        }
+      });
+    }
+  });
 
   return showId(req, res);
 };
