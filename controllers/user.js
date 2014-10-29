@@ -135,9 +135,9 @@ exports.postUpdateNotifications = function(req, res, next) {
       if (err) return next(err);
       req.flash('success', { msg: 'Notification settings updated.' });
       res.redirect('/account');
-    })
+    });
   });
-}
+};
 
 /**
  * POST /account/profile
