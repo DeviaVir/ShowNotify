@@ -1,0 +1,37 @@
+extends ../layout
+
+block content
+  h2 Search for 
+    i=name
+  hr
+  if noresult === false
+    table.table.table-condensed
+      thead
+        tr
+          th Title
+      tbody
+        for serie in series
+          tr
+            td(width='85%', valign='middle', style='vertical-align: middle;')
+              a(href='/shows/id/' + serie.id, style='display: block;')
+                =serie.SeriesName
+            td
+              a(href='/shows/id/' + serie.id, style='display: block;')
+                img(align='middle', height='30' width='100%', src='http://thetvdb.com/banners/_cache/' + serie.banner)
+    p
+      br
+      a.btn.btn-primary.btn-fab.btn-raised.icon-material-chevron-left.withripple(href='/shows/search')
+  else
+    .alert.alert-danger.animated.fadeIn
+      div="No results found"
+    form.form-horizontal(role='form',method='post')
+      input(type='hidden', name='_csrf', value=_csrf)
+      .form-group
+        label(class='col-sm-2 control-label', for='name') Name
+        .col-sm-8
+          input.form-control(type='text', name='name', id='name', autofocus=true)
+      .form-group
+        .col-sm-offset-2.col-sm-8
+          button.btn.btn-default(type='submit')
+            i.fa.fa-mail-forward
+            | Search

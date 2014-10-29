@@ -1,8 +1,4 @@
-public/.sass-cache
+node_modules
 sftp-config.json
-public/.DS_Store
 .DS_Store
-application/config/database.php
-application/controllers/cron.php
-
-public/compass_app_log.txt
+config/secrets.js

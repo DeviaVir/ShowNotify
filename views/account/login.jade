@@ -1,0 +1,34 @@
+extends ../layout
+
+block content
+  form(method='POST')
+    legend Sign In
+    input(type='hidden', name='_csrf', value=_csrf)
+    .col-sm-8.col-sm-offset-2
+      .form-group
+        label.control-label(for='email') Email
+        input.form-control(type='text', name='email', id='email', placeholder='Email', autofocus=true)
+      .form-group
+        label.control-label(for='password') Password
+        input.form-control(type='password', name='password', id='password', placeholder='Password')
+      .form-group
+        button.btn.btn-primary(type='submit')
+          i.fa.fa-unlock-alt
+          | Login
+        a.btn.btn-link(href='/forgot') Forgot your password?
+      hr
+      a.btn.btn-primary.btn-facebook.btn-social(href='/auth/facebook', style='padding-left: 45px;')
+        i.fa.fa-facebook
+        | Sign in with Facebook
+      br
+      a.btn.btn-primary.btn-twitter.btn-social(href='/auth/twitter', style='padding-left: 45px;')
+        i.fa.fa-twitter
+        | Sign in with Twitter
+      br
+      a.btn.btn-primary.btn-google-plus.btn-social(href='/auth/google', style='padding-left: 45px;')
+        i.fa.fa-google-plus
+        | Sign in with Google
+      br
+      a.btn.btn-primary.btn-github.btn-social(href='/auth/github', style='padding-left: 45px;')
+        i.fa.fa-github
+        | Sign in with GitHub

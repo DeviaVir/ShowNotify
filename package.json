@@ -1,0 +1,61 @@
+{
+  "name": "ShowNotify",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/deviavir/shownotify.git"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "mocha"
+  },
+  "dependencies": {
+    "async": "^0.7.0",
+    "bcrypt-nodejs": "^0.0.3",
+    "body-parser": "^1.0.2",
+    "cheerio": "^0.15.0",
+    "colors": "^1.0.3",
+    "compression": "^1.0.1",
+    "connect-assets": "^3.0.0-beta2",
+    "connect-mongo": "^0.4.0",
+    "cookie-parser": "^1.0.1",
+    "csso": "^1.3.11",
+    "csurf": "^1.1.0",
+    "errorhandler": "^1.0.0",
+    "express": "^4.0.0",
+    "express-flash": "^0.0.2",
+    "express-session": "^1.0.2",
+    "express-validator": "^2.1.1",
+    "fbgraph": "^0.2.10",
+    "github-api": "^0.7.0",
+    "jade": "^1.3.1",
+    "less": "^1.7.0",
+    "method-override": "^1.0.0",
+    "mongoose": "^3.8.8",
+    "morgan": "^1.0.0",
+    "nodemailer": "^0.6.5",
+    "passport": "^0.2.0",
+    "passport-facebook": "^1.0.3",
+    "passport-github": "^0.1.5",
+    "passport-google-oauth": "^0.1.5",
+    "passport-local": "^1.0.0",
+    "passport-oauth": "^1.0.0",
+    "passport-twitter": "^1.0.2",
+    "request": "^2.34.0",
+    "static-favicon": "^1.0.2",
+    "thetvdb-api": "^0.1.0",
+    "twit": "^1.1.13",
+    "uglify-js": "^2.4.12",
+    "underscore": "^1.6.0",
+    "validator": "^3.9.0",
+    "xml2js": "^0.4.4"
+  },
+  "devDependencies": {
+    "mocha": "^1.18.2",
+    "chai": "^1.9.1",
+    "supertest": "^0.11.0",
+    "mstring": "^0.1.2",
+    "inquirer": "^0.4.1",
+    "colors": "^0.6.2"
+  }
+}

@@ -1,0 +1,33 @@
+extends layout
+
+block content
+  h1 ShowNotify 
+  p.lead
+    | Notifies you of new series automatically.
+
+  if user
+    h2 Shows
+    p
+      | You are currently following the below shows and receiving notifications.
+    hr
+    if shows.length > 0
+      .row.shows
+        for show in shows
+          .col-sm-3
+            .panel.panel-default
+              .panel-body
+                .row
+                  .col-md-4
+                    img(src='http://thetvdb.com/banners/_cache/' + show.poster, height=100)
+                  .col-md-8
+                    p
+                      a(href='/shows/id/' + show.id)
+                        =show.SeriesName
+                      br
+                      =show.Network
+                      | , 
+                      =show.Rating
+    else
+      .alert.alert-dismissable.alert-info
+        | No shows added to your list yet! 
+        a(href='/shows/search', class='alert-link') Add some now
