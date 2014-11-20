@@ -1,3 +1,6 @@
+/**
+ * Module dependencies.
+ */
 var app = require('../app');
 var http = require('http');
 var xml = require('xml2js').parseString;
@@ -41,24 +44,27 @@ Show.find({}, function(err, shows) {
         res.setEncoding('utf8');
         res.on('data', function (body) {
           xml(body, function(err, obj) {
-            if(obj.Data && ('Error' in obj.Data) && obj.Data.Error) {
-              console.info('Skipping tomorrow, no relevant airDate'.green, show.id);
+            if(obj && ('Data' in obj) && obj.Data && ('Error' in obj.Data) && obj.Data.Error) {
+              console.info('Skipping tomorrow (' + tomorrow + '), no relevant airDate'.green, show.id);
             }
             else {
               show.users.forEach(function(userId) {
-                User.findById(userId, function(user) {
-                  var mailOptions = {
-                    from: 'ShowNotify ✔ <' + secrets.email.username + '>',
-                    to: user.email,
-                    subject: show.name + ' returns tomorrow - ShowNotify',
-                    text: 'Look sharp! ' + show.name + ' returns tomorrow with season ' + pad(obj.Data.Episode[0].SeasonNumber, 2) + ' episode ' + pad(obj.Data.Episode[0].EpImgFlag, 2) + ' (s' + pad(obj.Data.Episode[0].SeasonNumber, 2) + 'e' + pad(obj.Data.Episode[0].EpImgFlag, 2) + ') it has been called "' + obj.Data.Episode[0].EpisodeName[0] + '" and this is a short overview: ' + obj.Data.Episode[0].Overview[0],
-                    html: 'Look sharp! <br /><br />' +
-                      '<strong>' + show.name + '</strong> returns tomorrow with season ' + pad(obj.Data.Episode[0].SeasonNumber, 2) + ' episode ' + pad(obj.Data.Episode[0].EpImgFlag, 2) + ' (s' + pad(obj.Data.Episode[0].SeasonNumber, 2) + 'e' + pad(obj.Data.Episode[0].EpImgFlag, 2) + ').<br /><br />' +
-                      '<strong>"' + obj.Data.Episode[0].EpisodeName[0] + '"</strong><br />' + obj.Data.Episode[0].Overview[0]
-                  };
-                  transporter.sendMail(mailOptions, function(error, info){
-                    console.log(error, info);
-                  });
+                User.find(userId, function(err, user) {
+                  if(err === null) {
+                    user = user[0];
+                    var mailOptions = {
+                      from: 'ShowNotify ✔ <' + secrets.email.username + '>',
+                      to: user.email,
+                      subject: show.name + ' returns tomorrow - ShowNotify',
+                      text: 'Look sharp! ' + show.name + ' returns tomorrow with season ' + pad(obj.Data.Episode[0].SeasonNumber, 2) + ' episode ' + pad(obj.Data.Episode[0].EpisodeNumber, 2) + ' (s' + pad(obj.Data.Episode[0].SeasonNumber, 2) + 'e' + pad(obj.Data.Episode[0].EpisodeNumber, 2) + ') it has been called "' + obj.Data.Episode[0].EpisodeName[0] + '" and this is a short overview: ' + obj.Data.Episode[0].Overview[0],
+                      html: 'Look sharp! <br /><br />' +
+                        '<strong>' + show.name + '</strong> returns tomorrow with season ' + pad(obj.Data.Episode[0].SeasonNumber, 2) + ' episode ' + pad(obj.Data.Episode[0].EpisodeNumber, 2) + ' (s' + pad(obj.Data.Episode[0].SeasonNumber, 2) + 'e' + pad(obj.Data.Episode[0].EpisodeNumber, 2) + ').<br /><br />' +
+                        '<strong>"' + obj.Data.Episode[0].EpisodeName[0] + '"</strong><br />' + obj.Data.Episode[0].Overview[0]
+                    };
+                    transporter.sendMail(mailOptions, function(error, info){
+                      console.log(error, info);
+                    });
+                  }
                 });
               });
             }
@@ -73,24 +79,27 @@ Show.find({}, function(err, shows) {
         res.setEncoding('utf8');
         res.on('data', function (body) {
           xml(body, function(err, obj) {
-            if(obj.Data && ('Error' in obj.Data) && obj.Data.Error) {
-              console.info('Skipping yesterday, no relevant airDate'.green, show.id);
+            if(obj && ('Data' in obj) && obj.Data && ('Error' in obj.Data) && obj.Data.Error) {
+              console.info('Skipping yesterday (' + yesterday + '), no relevant airDate'.green, show.id);
             }
             else {
               show.users.forEach(function(userId) {
-                User.findById(userId, function(err, user) {
-                  var mailOptions = {
-                    from: 'ShowNotify ✔ <' + secrets.email.username + '>',
-                    to: user.email,
-                    subject: show.name + ' returned yesterday - ShowNotify',
-                    text: 'Look sharp! ' + show.name + ' returned yesterday with season ' + pad(obj.Data.Episode[0].SeasonNumber, 2) + ' episode ' + pad(obj.Data.Episode[0].EpImgFlag, 2) + ' (s' + pad(obj.Data.Episode[0].SeasonNumber, 2) + 'e' + pad(obj.Data.Episode[0].EpImgFlag, 2) + ') it has been called "' + obj.Data.Episode[0].EpisodeName[0] + '" and this is a short overview: ' + obj.Data.Episode[0].Overview[0],
-                    html: 'Look sharp! <br /><br />' +
-                      '<strong>' + show.name + '</strong> returned yesterday with season ' + pad(obj.Data.Episode[0].SeasonNumber, 2) + ' episode ' + pad(obj.Data.Episode[0].EpImgFlag, 2) + ' (s' + pad(obj.Data.Episode[0].SeasonNumber, 2) + 'e' + pad(obj.Data.Episode[0].EpImgFlag, 2) + ').<br /><br />' +
-                      '<strong>"' + obj.Data.Episode[0].EpisodeName[0] + '"</strong><br />' + obj.Data.Episode[0].Overview[0]
-                  };
-                  transporter.sendMail(mailOptions, function(error, info){
-                    console.log(error, info);
-                  });
+                User.find(userId, function(err, user) {
+                  if(err === null) {
+                    user = user[0];
+                    var mailOptions = {
+                      from: 'ShowNotify ✔ <' + secrets.email.username + '>',
+                      to: user.email,
+                      subject: show.name + ' returned yesterday - ShowNotify',
+                      text: 'Look sharp! ' + show.name + ' returned yesterday with season ' + pad(obj.Data.Episode[0].SeasonNumber, 2) + ' episode ' + pad(obj.Data.Episode[0].EpisodeNumber, 2) + ' (s' + pad(obj.Data.Episode[0].SeasonNumber, 2) + 'e' + pad(obj.Data.Episode[0].EpisodeNumber, 2) + ') it has been called "' + obj.Data.Episode[0].EpisodeName[0] + '" and this is a short overview: ' + obj.Data.Episode[0].Overview[0],
+                      html: 'Look sharp! <br /><br />' +
+                        '<strong>' + show.name + '</strong> returned yesterday with season ' + pad(obj.Data.Episode[0].SeasonNumber, 2) + ' episode ' + pad(obj.Data.Episode[0].EpisodeNumber, 2) + ' (s' + pad(obj.Data.Episode[0].SeasonNumber, 2) + 'e' + pad(obj.Data.Episode[0].EpisodeNumber, 2) + ').<br /><br />' +
+                        '<strong>"' + obj.Data.Episode[0].EpisodeName[0] + '"</strong><br />' + obj.Data.Episode[0].Overview[0]
+                    };
+                    transporter.sendMail(mailOptions, function(error, info){
+                      console.log(error, info);
+                    });
+                  }
                 });
               });
             }
