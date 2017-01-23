@@ -46,6 +46,11 @@ module.exports = {
 
   thetvdb: {
     apiKey: process.env.THETVDB_KEY || 'key'
+  },
+
+  email: {
+    username: 'name@gmail.com',
+    password: 'password'
   }
 };
 ```
