@@ -57,38 +57,72 @@ exports.getId = function(req, res) {
 
 exports.postId = function(req, res) {
   var id = req.params.id,
-      user = req.user;
+      user = req.user,
+      addToFollowList = 0;
 
   // Add show to followlist for this user
   if(user.shows.indexOf(id) > -1) {
     var i = user.shows.indexOf(id);
-    user.shows.splice(i);
+    user.shows.splice(i, 1);
   }
   else {
     user.shows.push(id);
+    addToFollowList = 1;
   }
   user.save();
 
   // Add to shows
-  Show.findById(id, function(err, currentShow) {
-    console.log(err, currentShow);
+  Show.findOne({'id': id}, function(err, currentShow) {
+    var show;
+    if(!!addToFollowList === true) {
+      if(currentShow === null) {
+        getSeriesDataById(req, res, function(serie) {
+          var users = [];
+          users.push(user.id);
 
-    if(!currentShow) {
-      var show = new Show({
-        id: id
-      });
+          show = new Show({
+            'id': id,
+            'showId': id,
+            'name': serie.SeriesName,
+            'users': users
+          });
 
-      show.save(function(err) {
-        if (err) {
-          if (err.code === 11000) {
-            req.flash('errors', { msg: 'Show with that id already exists.' });
+          if(typeof show !== 'undefined') {
+            show.save();
           }
+
+          return showId(req, res);
+        });
+      }
+      else {
+        if(currentShow.users.indexOf(user.id) === -1) {
+          currentShow.users.push(user.id);
         }
-      });
+        show = currentShow;
+
+        if(typeof show !== 'undefined') {
+          show.save();
+        }
+
+        return showId(req, res);
+      }
+    }
+    else {
+      if(currentShow !== null) {
+        var index = currentShow.users.indexOf(user.id);
+        if(index > -1) {
+          currentShow.users.splice(index, 1);
+        }
+        show = currentShow;
+
+        if(typeof show !== 'undefined') {
+          show.save();
+        }
+      }
+
+      return showId(req, res);
     }
   });
-
-  return showId(req, res);
 };
 
 /**
@@ -141,6 +175,18 @@ exports.postSearch = function(req, res) {
     }
   });
 };
+
+function getSeriesDataById(req, res, cb) {
+  var id = req.params.id,
+      key = secrets.thetvdb.apiKey;
+
+  tvDB(key).getSeriesById(id, function(error, result) {
+    if(('Data' in result) && result.Data !== 0 && ('Series' in result.Data)) {
+      return cb(result.Data.Series);
+    }
+    return cb(null);
+  });
+}
 
 function showId(req, res) {
   var id = req.params.id,
