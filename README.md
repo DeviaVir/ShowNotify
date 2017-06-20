@@ -1,6 +1,8 @@
 [![endorse](http://api.coderwall.com/deviavir/endorsecount.png)](http://coderwall.com/deviavir)
 
 # ShowNotify
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/DeviaVir/ShowNotify.svg)](https://greenkeeper.io/)
 This node project allows users to be notified of new shows.
 
 ### config/secrets.js
